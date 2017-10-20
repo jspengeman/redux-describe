@@ -1,0 +1,7 @@
+{
+  "name": "redux-describe",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "Jonathan Spengeman <jonathan.spengeman@gmail.com> (https://github.com/jspengeman)",
+  "license": "MIT"
+}
