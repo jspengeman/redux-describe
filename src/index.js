@@ -18,7 +18,7 @@ const notNullOrUndefined = (value) => notNull(value) && notUndefined(value)
  * 
  * @throws Error If name or initialState are null or undefined.
  */
-const given = (name, initialState) => {
+const reducer = (name, initialState) => {
   invariant(notNullOrUndefined(name) && notEmpty(name),
     'name cannot be null or undefined.')
   invariant(notNullOrUndefined(initialState),
@@ -31,7 +31,7 @@ const given = (name, initialState) => {
 	 * @param {string} actionType The action type that should be handled. 
 	 * Cannot be blank, null or undefined.
 	 * 
-	 * @return {object} An object with an it and on property to chain more 
+	 * @return {object} An object with an does and on property to chain more 
 	 * calls to. Never null or undefined.
 	 * 
 	 * @throws Error If actionType is null or undefined.
@@ -39,8 +39,8 @@ const given = (name, initialState) => {
   const on = (actionType) => {
     invariant(notNullOrUndefined(actionType) && notEmpty(actionType),
       'actionType cannot be null or undefined.')
-    stack.push({fn: 'on', args: actionType})
-    return {it, on}
+    stack.push({fn: 'on', arg: actionType})
+    return Object.freeze({does, on})
   }
 
   /**
@@ -57,16 +57,16 @@ const given = (name, initialState) => {
 	 * 
 	 * @throws Error If operation is null or undefined.
 	 */
-  const it = (operation) => {
+  const does = (operation) => {
     invariant(notNullOrUndefined(operation),
       'operation cannot be null or undefined.')
-    stack.push({fn: 'it', args: operation})
-    return {on, build}
+    stack.push({fn: 'does', arg: operation})
+    return Object.freeze({on, build})
   }
 
   /**
 	 * Build the reducer. All cases the reducer handles are generated from 
-	 * the calls to on and it.
+	 * the calls to on and does.
 	 * 
 	 * @return {function} A new reducer with the originally passed in name, 
 	 * initial state and the default state from the call to build. 
@@ -74,23 +74,23 @@ const given = (name, initialState) => {
 	 */
   const build = () => {
     // build the possible cases for the reducer.
-    const {cases} = stack.reverse().reduce(({cases, it}, call) => {
+    const {cases} = stack.reverse().reduce(({cases, does}, call) => {
       switch (call.fn) {
-        case 'it':
-          return {cases, it: call}
+        case 'does':
+          return {cases, does: call}
         case 'on':
-          return {it, cases: cases.concat({it, on: call})}
+          return {does, cases: cases.concat({does, on: call})}
         default:
-          return {cases, it}
+          return {cases, does}
       }
-    }, {cases: [], it: null})
+    }, {cases: [], does: null})
 
     // flatten the cases into an action lookup table
     const actions = cases.reduce((t, c) => {
-      return Object.assign(t, {[c.on.args]: c.it.args})
+      return Object.assign(t, {[c.on.arg]: c.does.arg})
     }, {})
 
-    const reducer = (state = initialState, action) => {
+    const builtReducer = (state = initialState, action) => {
       const operation = actions[action.type]
       if (notNullOrUndefined(operation) && typeof operation === 'function') {
         return operation(state, action)
@@ -100,11 +100,11 @@ const given = (name, initialState) => {
         return state
       }
     }
-    Object.defineProperty(reducer, 'name', {value: name});
-    return reducer
+    Object.defineProperty(builtReducer, 'name', {value: name})
+    return builtReducer
   }
 
-  return {on}
+  return Object.freeze({on})
 }
 
-export default given
+export default reducer

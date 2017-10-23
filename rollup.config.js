@@ -1,17 +1,23 @@
 import babel from 'rollup-plugin-babel'
 import uglify from 'rollup-plugin-uglify'
+import resolve from 'rollup-plugin-node-resolve'
+import commonjs from 'rollup-plugin-commonjs'
 
 export default {
   input: 'src/index.js',
   output: {
     file: 'build/index.bundle.js',
-    format: 'umd'
+    format: 'umd',
   },
   name: 'redux-describe',
   plugins: [
-    babel({
-      exclude: 'node_modules/**'
+    resolve({
+      jsnext: true,
     }),
-    uglify()
-  ]
-};
+    commonjs(),
+    babel({
+      exclude: 'node_modules/**',
+    }),
+    uglify(),
+  ],
+}

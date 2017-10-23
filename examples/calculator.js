@@ -1,11 +1,13 @@
-const add = (state = 0, action) => state + action.payload
-const subtract = (state = 0, action) => state - action.payload
-const divide = (state = 0, action) => state / action.payload
-const multiply = (state = 0, action) => state * action.payload
+const calculator =
+	reducer('calculator', 0)
+		.on('ADD').does((state = 0, action) => state + action.payload)
+		.on('SUB').does((state = 0, action) => state - action.payload)
+		.on('DIV').does((state = 0, action) => state / action.payload)
+		.on('MULT').does((state = 0, action) => state * action.payload)
+		.build(0)
 
-const calculator = given("calculator", 0)
-									  .on('ADD').it(add)
-  								  .on('SUB').it(subtract)
-  								  .on('DIV').it(divide)
-  								  .on('MULT').it(multiply)
-  								  .build(0);
+calculator(undefined, {}) // == 0 
+calculator(5, {type: 'ADD', payload: 5}) // === 10
+calculator(5, {type: 'SUB', payload: 5}) // === 0
+calculator(5, {type: 'DIV', payload: 5}) // === 1
+calculator(5, {type: 'MULT', payload: 5}) // === 25
