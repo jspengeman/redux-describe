@@ -8,8 +8,6 @@ const notNullOrUndefined = (value) => notNull(value) && notUndefined(value)
 /**
  * Descriptively build a reducer.
  * 
- * @param {string} name The name of the reducer to build. 
- * Cannot be blank, null or undefined.
  * @param {any} initialState The initial state of the reducer. 
  * Cannot be null or undefined.
  * 
@@ -18,9 +16,7 @@ const notNullOrUndefined = (value) => notNull(value) && notUndefined(value)
  * 
  * @throws Error If name or initialState are null or undefined.
  */
-const reducer = (name, initialState) => {
-  invariant(notNullOrUndefined(name) && notEmpty(name),
-    'name cannot be null or undefined.')
+const reducer = (initialState) => {
   invariant(notNullOrUndefined(initialState),
     'initialState cannot be null or undefined.')
   const stack = []
@@ -90,7 +86,7 @@ const reducer = (name, initialState) => {
       return Object.assign(t, {[c.on.arg]: c.does.arg})
     }, {})
 
-    const builtReducer = (state = initialState, action) => {
+    return (state = initialState, action) => {
       const operation = actions[action.type]
       if (notNullOrUndefined(operation) && typeof operation === 'function') {
         return operation(state, action)
@@ -100,8 +96,6 @@ const reducer = (name, initialState) => {
         return state
       }
     }
-    Object.defineProperty(builtReducer, 'name', {value: name})
-    return builtReducer
   }
 
   return Object.freeze({on})

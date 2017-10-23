@@ -9,28 +9,25 @@ import reducer from '../src'
 // will need to be removed.
 
 describe('reducer', () => {
-  it('throws an error if any argument breaks its contract.', () => {
-    expect(() => reducer(null, 1)).toThrow()
-    expect(() => reducer(undefined, 1)).toThrow()
-    expect(() => reducer('any', null)).toThrow()
-    expect(() => reducer('any', undefined)).toThrow()
-    expect(() => reducer('', 1)).toThrow()
+  it('throws an error if initialState is null or undefined.', () => {
+    expect(() => reducer(null)).toThrow()
+    expect(() => reducer(undefined)).toThrow()
   })
 
   it('returns an object with the \'on\' property', () => {
-    const builder = reducer('any', 1)
+    const builder = reducer(1)
     expect(builder.on).toBeDefined()
   })
 
   it('returns an immutable object', () => {
     expect(() => {
-      const builder = reducer('any', 1)
+      const builder = reducer(1)
       Object.defineProperty(builder, 'field', {value: 'field'})
     }).toThrow()
   })
 
   describe('on', () => {
-    const on = reducer('any', 1).on
+    const on = reducer(1).on
 
     it('throws an error actionType if is blank, null or undefined', () => {
       expect(() => on(null)).toThrow()
@@ -73,17 +70,9 @@ describe('reducer', () => {
       })
 
       describe('build', () => {
-        it('builds a reducer with the given name', () => {
-          const fn =
-            reducer('reducerName', 0)
-              .on('operation').does((state = 0, action) => state)
-              .build()
-          expect(fn.name).toBe('reducerName')
-        })
-
         it('builds a reducer with a single on and it call', () => {
           const fn =
-            reducer('reducer', 0)
+            reducer(0)
               .on('operation').does((state = 0, action) => state)
               .build()
           expect(fn).toBeDefined()
@@ -92,7 +81,7 @@ describe('reducer', () => {
         it('builds a reducer with multiple on calls and a single it call',
           () => {
             const fn =
-              reducer('reducer', 0)
+              reducer(0)
                 .on('operation1')
                 .on('operation2')
                 .on('operation3').does((state = 0, action) => state)
@@ -104,7 +93,7 @@ describe('reducer', () => {
           () => {
             const operation = (state = 0, action) => state
             const fn =
-              reducer('reducer', 0)
+              reducer(0)
                 .on('operation1').does(operation)
                 .on('operation2').does(operation)
                 .on('operation3').does(operation)
@@ -115,7 +104,7 @@ describe('reducer', () => {
         it('built reducer correctly handles all cases with correct operations',
           () => {
             const fn =
-              reducer('reducer', 0)
+              reducer(0)
                 .on('action0')
                 .on('action1').does((state = 0, action) => 1)
                 .on('action2').does((state = 0, action) => 2)

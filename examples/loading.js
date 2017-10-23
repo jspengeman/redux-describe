@@ -1,5 +1,7 @@
+import reducer from 'redux-describe'
+
 const isLoading =
-  reducer('isLoading', false)
+  reducer(false)
     .on('LOADING_SUCCESS')
     .on('LOADING_FAILURE').does(false)
     .on('IS_LOADING').does(true)

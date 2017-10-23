@@ -1,5 +1,7 @@
+import reducer from 'redux-describe'
+
 const calculator =
-	reducer('calculator', 0)
+	reducer(0)
 		.on('ADD').does((state = 0, action) => state + action.payload)
 		.on('SUB').does((state = 0, action) => state - action.payload)
 		.on('DIV').does((state = 0, action) => state / action.payload)
