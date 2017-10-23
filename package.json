@@ -1,15 +1,27 @@
 {
   "name": "redux-describe",
-  "description": "A boiler plate free way to build self documenting reducers with a simple API.",
+  "description": "A boilerplate free way to build self documenting reducers with a simple API.",
+  "author": "Jonathan Spengeman <jonathan.spengeman@gmail.com> (https://github.com/jspengeman)",
   "repository": {
     "type": "git",
     "url": "https://github.com/jspengeman/redux-describe"
   },
-  "version": "0.2.0",
+  "keywords": [
+    "redux",
+    "reducer",
+    "state",
+    "functional",
+    "immutable",
+    "flux",
+    "elm",
+    "boilerplate free",
+    "self documenting"
+  ],
+  "bugs": "https://github.com/jspengeman/redux-describe/issues",
+  "version": "0.3.0",
   "main": "build/index.bundle.js",
   "module": "build/index.bundle.js",
   "jsnext:main": "build/index.bundle.js",
-  "author": "Jonathan Spengeman <jonathan.spengeman@gmail.com> (https://github.com/jspengeman)",
   "license": "MIT",
   "scripts": {
     "build": "rollup -c rollup.config.js",

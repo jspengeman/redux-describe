@@ -122,6 +122,7 @@ describe('reducer', () => {
                 .on('action3').does(3)
                 .on('action4').does(4)
                 .build()
+            expect(fn(5, {})).toBe(5)
             expect(fn(undefined, {})).toBe(0)
             expect(fn(0, {type: 'action0'})).toBe(1)
             expect(fn(0, {type: 'action1'})).toBe(1)

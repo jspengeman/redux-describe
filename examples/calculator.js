@@ -4,8 +4,9 @@ const calculator =
 		.on('SUB').does((state = 0, action) => state - action.payload)
 		.on('DIV').does((state = 0, action) => state / action.payload)
 		.on('MULT').does((state = 0, action) => state * action.payload)
-		.build(0)
+		.build()
 
+calculator(1, {}) // == 1
 calculator(undefined, {}) // == 0 
 calculator(5, {type: 'ADD', payload: 5}) // === 10
 calculator(5, {type: 'SUB', payload: 5}) // === 0

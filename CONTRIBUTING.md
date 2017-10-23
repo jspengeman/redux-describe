@@ -1,1 +1,1 @@
-# TODO
+At the current moment, redux-describe is in its infancy. The most useful type of contributions that could be made right now relate to the project's concept itself. If you think this is something you might be interested in using or want to offer some suggestions feel free to open an issue and tell me your ideas.
