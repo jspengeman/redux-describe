@@ -18,7 +18,7 @@
     "self documenting"
   ],
   "bugs": "https://github.com/jspengeman/redux-describe/issues",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "build/index.bundle.js",
   "module": "build/index.bundle.js",
   "jsnext:main": "build/index.bundle.js",
